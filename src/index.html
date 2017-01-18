@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%= json.project.seo_title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="__sync_contentCategory" content="meterA">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <%= !json.project.embedded ? t.include("partials/_paywall.html") : t.include("partials/_embedframe.html") %>
+
+    <%= t.include("partials/_head.html") %>
+
+  </head>
+
+  <%= !json.project.embedded ? "<body>" : "<body is='responsive-body'>" %>
+
+    <div class="outer">
+
+      <div class="hed">Employee contribution rates</div>
+
+      <div class="chatter">
+        Pension rates have fluctuated throughout the years as investments have varied, but they're now projected to skyrocket to higher rates than we've ever seen due to high pension costs.
+      </div>
+
+      <div id="line-chart" class="line-chart"></div>
+
+      <div class="credit">
+        <div class="entry">Emma O'Neill  &bull; <a href="mailto:eoneill@sfchronicle.com">eoneill@sfchronicle.com</a>   &bull; <a href = "https://twitter.com/emmaruthoneill" target="_blank">@emmaruthoneill</a></div>
+      </div>
+      <div class="source">
+        <em>Data is from <a href="www.google.com" target="_blank">a very helpful source</a></em>
+      </div>
+
+    </div>
+
+    <script>
+      var rateData = <%= JSON.stringify(csv.rateData) %>
+    </script>
+
+    <script src="app.js" async></script>
+    <%= t.include("partials/_helloSFC.html") %>
+
+  </body>
+</html>
