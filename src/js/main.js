@@ -4,6 +4,7 @@ var d3 = require('d3');
 // Parse the date / time
 var parseYear = d3.time.format("%Y").parse;
 
+// naming variables
 var svg, x, y;
 
 // colors
