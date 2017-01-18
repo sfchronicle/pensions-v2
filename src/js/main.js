@@ -146,6 +146,13 @@ if (screen.width >= 480) {
       .attr("fill","white")
       .attr("pointer-events", "none");
 
+// focus.append("foreignObject")
+//     .attr("x", -100)
+//     .attr("y", -10)
+//     .append("div")
+//       .attr("class","hover-text")
+//       .attr("pointer-events", "none");
+
   focus.append("text")
       .attr("x", -100)
       .attr("y", -10)
@@ -177,6 +184,7 @@ voronoiGroup.selectAll(".voronoi")
 function mouseover(d) {
   d3.select(".id"+d.key).classed("line-hover", true);
   focus.attr("transform", "translate(" + x(parseYear(String(d.year))) + "," + y(d.rate) + ")");
+  // focus.select("foreignObject").html("<span style='color:red'>Hello</span> <span style='color:blue'>world</span>!");
   focus.select("text").text(d.year+": "+Math.round(d.rate*100)/100+ "%");
   // focus.select("text").html("<div><span class='bold'>"+d.year+"</span>: "+Math.round(d.rate*100)/100+ "%</div>");
 }
