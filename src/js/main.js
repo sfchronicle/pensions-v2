@@ -10,11 +10,19 @@ var svg, x, y;
 // colors
 function color_by_dataset(dataset) {
   if (dataset == "historical") {
-    return "#C10326";
+    return "#6790B7";//"#C10326";
   } else if (dataset == "projected") {
-    return "#E08041";
+    return "#C10326";//#E08041";
   } else {
-    return "FCDC4D";
+    return "#FCDC4D";
+  }
+}
+
+function stroke_by_dataset(dataset) {
+  if (dataset == "historical") {
+    return ("3,0");
+  } else {
+    return ("10,2");
   }
 }
 
@@ -27,16 +35,12 @@ var ratesNested = d3.nest()
   .entries(rateData);
   // .map(rateData, d3.map);
 
-console.log(ratesNested);
-
 var flatData = [];
 rateData.forEach(function(d,idx){
   flatData.push(
     {key: d.group, rate: d.rate, year: d.year}
   );
 });
-
-console.log(flatData);
 
 // setting sizes of interactive
 var margin = {
@@ -56,7 +60,7 @@ if (screen.width > 768) {
   var margin = {
     top: 15,
     right: 45,
-    bottom: 35,
+    bottom: 60,
     left: 30
   };
   var width = 340 - margin.left - margin.right;
@@ -66,7 +70,7 @@ if (screen.width > 768) {
   var margin = {
     top: 15,
     right: 55,
-    bottom: 35,
+    bottom: 60,
     left: 30
   };
   var width = 310 - margin.left - margin.right;
@@ -117,10 +121,10 @@ var valueline = d3.svg.line()
     });
 
 ratesNested.forEach(function(d) {
-  console.log(d);
   var class_list = "line voronoi id"+d.key;
   svg.append("path")
     .attr("class", class_list)
+    .style("stroke-dasharray", stroke_by_dataset(d.key))
     .style("stroke", color_by_dataset(d.key))//cscale(d.key))//
     .attr("d", valueline(d.values));
 });
@@ -136,7 +140,7 @@ if (screen.width >= 480) {
   focus.append("rect")
       .attr("x",-110)
       .attr("y",-25)
-      .attr("width","120px")
+      .attr("width","100px")
       .attr("height","20px")
       .attr("opacity","0.8")
       .attr("fill","white")
@@ -145,12 +149,14 @@ if (screen.width >= 480) {
   focus.append("text")
       .attr("x", -100)
       .attr("y", -10)
+      .attr("class","hover-text")
       .attr("pointer-events", "none");
 }
 
 var voronoiGroup = svg.append("g")
     .attr("class", "voronoi");
 
+if (screen.width >= 480){
 voronoiGroup.selectAll(".voronoi")
   .data(voronoiArea(flatData))
   .enter().append("path")
@@ -166,16 +172,16 @@ voronoiGroup.selectAll(".voronoi")
   })
   .on("mouseover", mouseover)
   .on("mouseout", mouseout);
+}
 
 function mouseover(d) {
-  console.log("mousing in");
   d3.select(".id"+d.key).classed("line-hover", true);
   focus.attr("transform", "translate(" + x(parseYear(String(d.year))) + "," + y(d.rate) + ")");
-  focus.select("text").text(d.year+": "+d.rate+ "%");
+  focus.select("text").text(d.year+": "+Math.round(d.rate*100)/100+ "%");
+  // focus.select("text").html("<div><span class='bold'>"+d.year+"</span>: "+Math.round(d.rate*100)/100+ "%</div>");
 }
 
 function mouseout(d) {
-  console.log("mousing out");
   d3.select(".id"+d.key).classed("line-hover", false);
   focus.attr("transform", "translate(-100,-100)");
 }
@@ -195,7 +201,7 @@ if (screen.width <= 480) {
       .attr("x", width)
       .attr("y", 35)
       .style("text-anchor", "end")
-      .text("Month")
+      .text("Year")
 } else {
   svg.append("g")
       .attr("class", "x axis")
@@ -206,7 +212,7 @@ if (screen.width <= 480) {
       .attr("x", width)
       .attr("y", 40)
       .style("text-anchor", "end")
-      .text("Month");
+      .text("Year");
 }
 
 if (screen.width <= 480) {

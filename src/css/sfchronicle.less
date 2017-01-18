@@ -150,20 +150,24 @@ li {
 }
 .source, .credit {
   clear: left;
-  padding-top: 10px;
+  // padding-top: 10px;
   font-size: 12px;
   // color: @white;
   font-style: italic;
   font-family: @block-graphics;
-  @media @tablet {
-    padding: 10px 20px;
-  }
+  padding: 20px 10px;
   @media @mobile {
-    padding: 10px;
+    padding: 0px 10px;
   }
   &.padded {
     padding-bottom: 40px;
   }
+}
+.source {
+  padding-top: 0px;
+}
+.credit {
+  padding-bottom: 5px;
 }
 
 svg {

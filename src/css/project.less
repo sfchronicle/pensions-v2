@@ -1,3 +1,6 @@
+@historical: #6790B7;
+@projected: #C10326;
+@prev-projected: #FCDC4D;
 
 #line-chart {
   path {
@@ -12,6 +15,9 @@
   .line {
     fill: none;
     opacity: 1;
+  }
+  .hover-text {
+    font-family: @bold-graphics;
   }
 }
 
@@ -33,4 +39,54 @@ svg {
   // fill: white;
   // opacity: 0;
   pointer-events: all;
+}
+
+.desktop-instruct {
+  font-size: 14px;
+  padding-top: 10px;
+  @media @mobile {
+    display: none;
+  }
+}
+
+.legend-container {
+  font-size: 12px;
+  font-family: @block-graphics;
+  // border: 1px solid @black;
+  // border-radius: 6px;
+  width: 440px;
+  @media @mobile {
+    width: 90%;
+  }
+  margin: auto;
+  // margin-bottom: 40px;
+  &.nopadding {
+    margin-bottom: 0;
+  }
+  padding: 4px;
+  .display-flex;
+  .flex-wrap(wrap);
+  @media @mobile {
+    margin: 15px auto;
+  }
+  .element {
+    .flex(0 0 50%);
+    @media @mobile {
+      .flex(0 0 90%);
+    }
+  }
+  .historical-swath, .projected-swath, .prev-projected-swath  {
+    height: 14px;
+    width: 14px;
+    margin: 4px;
+    border-radius: 2px;
+  }
+  .historical-swath {background: @historical}
+  .projected-swath {background: @projected}
+  .prev-projected-swath {background: @prev-projected}
+  .legend-text {
+    width: 180px;
+    padding-left: 20px;
+    vertical-align: text-top;
+  }
 }
