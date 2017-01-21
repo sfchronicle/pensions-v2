@@ -59,7 +59,7 @@ if (screen.width > 768) {
   console.log("big phone");
   var margin = {
     top: 15,
-    right: 45,
+    right: 50,
     bottom: 60,
     left: 30
   };
@@ -112,7 +112,7 @@ var yAxis = d3.svg.axis().scale(y)
     .orient("left");
 
 var valueline = d3.svg.line()
-    .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
+    // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
     .x(function(d) {
       return x(parseYear(String(d.year)));
     })
@@ -134,6 +134,7 @@ var focus = svg.append("g")
     .attr("class", "focus");
 
 if (screen.width >= 480) {
+
   focus.append("circle")
       .attr("r", 3.5);
 
@@ -142,19 +143,30 @@ if (screen.width >= 480) {
       .attr("y",-25)
       .attr("width","100px")
       .attr("height","20px")
-      .attr("opacity","0.8")
+      .attr("opacity","1")
       .attr("fill","white")
       .attr("pointer-events", "none");
 
-// focus.append("foreignObject")
-//     .attr("x", -100)
-//     .attr("y", -10)
-//     .append("div")
-//       .attr("class","hover-text")
-//       .attr("pointer-events", "none");
-
   focus.append("text")
       .attr("x", -100)
+      .attr("y", -10)
+      .attr("class","hover-text")
+      .attr("pointer-events", "none");
+
+} else {
+
+  focus.append("circle")
+      .attr("r", 3.5);
+  focus.append("rect")
+      .attr("x",-40)
+      .attr("y",-25)
+      .attr("width","100px")
+      .attr("height","20px")
+      .attr("opacity","1")
+      .attr("fill","white")
+      .attr("pointer-events", "none");
+  focus.append("text")
+      .attr("x", -30)
       .attr("y", -10)
       .attr("class","hover-text")
       .attr("pointer-events", "none");
@@ -163,7 +175,7 @@ if (screen.width >= 480) {
 var voronoiGroup = svg.append("g")
     .attr("class", "voronoi");
 
-if (screen.width >= 480){
+// if (screen.width >= 480){
 voronoiGroup.selectAll(".voronoi")
   .data(voronoiArea(flatData))
   .enter().append("path")
@@ -178,15 +190,25 @@ voronoiGroup.selectAll(".voronoi")
     }
   })
   .on("mouseover", mouseover)
+  .on("click", mouseover)
   .on("mouseout", mouseout);
-}
+// }
 
 function mouseover(d) {
   d3.select(".id"+d.key).classed("line-hover", true);
   focus.attr("transform", "translate(" + x(parseYear(String(d.year))) + "," + y(d.rate) + ")");
-  // focus.select("foreignObject").html("<span style='color:red'>Hello</span> <span style='color:blue'>world</span>!");
   focus.select("text").text(d.year+": "+Math.round(d.rate*100)/100+ "%");
-  // focus.select("text").html("<div><span class='bold'>"+d.year+"</span>: "+Math.round(d.rate*100)/100+ "%</div>");
+  if (screen.width <= 480) {
+    if (d.year < 2009) {
+      focus.select("text").attr("x","0px");
+      focus.select("rect").attr("x","0px");
+      focus.select("rect").attr("width","80px");
+    } else {
+      focus.select("text").attr("x","-80px");
+      focus.select("rect").attr("x","-80px");
+      focus.select("rect").attr("width","80px");
+    }
+  }
 }
 
 function mouseout(d) {
